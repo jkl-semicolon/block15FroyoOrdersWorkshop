@@ -9,7 +9,7 @@ Example: user enters: vanilla,vanilla,vanilla,strawberry,coffee,coffee
                       coffee:2
 
 @params {string} flavorString
-@return {object} orderTable
+@return {object} flavorObject
 
   1. Prompt the user to enter their desired flavors, separated by commas.
   2. Split the string into an array, with the desired flavors as values.
