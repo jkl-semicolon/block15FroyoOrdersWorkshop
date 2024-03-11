@@ -15,56 +15,67 @@ Example: user enters: vanilla,vanilla,vanilla,strawberry,coffee,coffee
   2. Split the string into an array, with the desired flavors as values.
   3. Transform the array into an object, with the keys being the desired flavors
      and the amounts of the flavors being the values.
+     a. Create two temp arrays, one temp array being the main array with no 
+        duplicate flavors. The second temp array will have quantities of each flavor;
+        the quantities will be located in the same index as the flavor names in the 
+        first temp array.
+     b. Take these two temp arrays and combine them to make an object, with the key
+        being the flavor name, and the value being the quantity of that flavor.
   4. Show the object with the flavor/quantity properties in the website console.
 */
 
-// const flavorString = prompt("Please enter your order of desired flavors, separated ONLY by commas:");
+/* 
+This function will build the first temp array, 
+removing all duplicates from the main array.
 
-//test placeholder for flavorString:
-const flavorString = "vanilla,vanilla,vanilla,strawberry,coffee,coffee";
-
-const flavorArray = flavorString.split(',');
-
-flavorArray.sort();
-
-console.log(flavorArray);
-
-// This function will build a temp array, removing all duplicates.
-const removeArrayDupes = (array) => {
-  const tempArray = [];
-  tempArray.push(array[0]);
-  for (let i=1; i<array.length; i++) {
-    if (array[i] === array[i-1]) continue;
-    tempArray.push(array[i])
+@params {array} flavorArray
+@return {array} tempNoDupeArray 
+*/
+const removeArrayDupes = (flavorArray) => {
+  const tempNoDupeArray = [];
+  //need to sort flavorArray alphabetically in order for this function to function.
+  flavorArray.sort()
+  tempNoDupeArray.push(flavorArray[0]);
+  for (let i=1; i<flavorArray.length; i++) {
+    if (flavorArray[i] === flavorArray[i-1]) continue;
+    tempNoDupeArray.push(flavorArray[i])
   }
-  return tempArray;
+  return tempNoDupeArray;
 }
 
-console.log(removeArrayDupes(flavorArray));
+/* 
+This function will build the second temp array, 
+giving us counts for each flavor in the same index position
+as those flavors in the first temp array.
 
-// This function will take in a sorted flavor array, along with the temp array of it with
-// duplicates removed. It will return an array with the flavor counts of those flavors.
-const getFlavorCount = (array, tempArray) => {
-  const flavorCountArray = [];
+@params {array, array} flavorArray, tempNoDupeArray
+@return {array} tempFlavorCountArray 
+*/
+const getFlavorCount = (flavorArray, tempNoDupeArray) => {
+  const tempFlavorCountArray = [];
   let currentFlavorCount = 0;
-  for (let i=0; i<tempArray.length; i++) {
+  // Our nested for loops let us iterate through our main array for each
+  // index of our first temp no dupe array. This will give us a count for each flavor.
+  for (let i=0; i<tempNoDupeArray.length; i++) {
     currentFlavorCount = 0;
-    for (let j=0; j<array.length; j++) {
-      if (array[j] === tempArray[i]) {
+    for (let j=0; j<flavorArray.length; j++) {
+      if (flavorArray[j] === tempNoDupeArray[i]) {
         currentFlavorCount++;
       }
     }
-    flavorCountArray.push(currentFlavorCount);
+    tempFlavorCountArray.push(currentFlavorCount);
   }
-  return flavorCountArray;
+  return tempFlavorCountArray;
 } 
 
-console.log(getFlavorCount(flavorArray, removeArrayDupes(flavorArray)));
+/* 
+This function will use our two temp functions to transform our main array
+into an object with the different flavors being the keys and the
+quantity of flavors being the values of those keys.
 
-
-// This function will build an object of flavor and quantities.
-// @params {array} flavorArray
-// @return {object} flavorObject
+@params {array} flavorArray
+@return {object} flavorObject 
+*/
 const buildFlavorObject = (flavorArray) => {
   const flavorArrayNoDupes = removeArrayDupes(flavorArray);
   const flavorArrayCount = getFlavorCount(flavorArray, flavorArrayNoDupes);
@@ -75,4 +86,11 @@ const buildFlavorObject = (flavorArray) => {
   return flavorObject;
 } 
 
+/* 
+This is our main script. We prompt the user for their order of desired flavors,
+then we split their inputted string into an array, and then we return that array
+transformed into an object in a table in the console of our website. 
+*/
+const flavorString = prompt("Please enter your order of desired flavors, separated ONLY by commas:");
+const flavorArray = flavorString.split(',');
 console.table(buildFlavorObject(flavorArray));
