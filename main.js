@@ -27,6 +27,8 @@ const flavorArray = flavorString.split(',');
 
 flavorArray.sort();
 
+console.log(flavorArray);
+
 // This function will build a temp array, removing all duplicates.
 const removeArrayDupes = (array) => {
   const tempArray = [];
@@ -38,26 +40,39 @@ const removeArrayDupes = (array) => {
   return tempArray;
 }
 
-// This function will take in the flavor array, along with the temp array with
-// duplicates removed. 
-const getFlavorCount = (array) 
+console.log(removeArrayDupes(flavorArray));
+
+// This function will take in a sorted flavor array, along with the temp array of it with
+// duplicates removed. It will return an array with the flavor counts of those flavors.
+const getFlavorCount = (array, tempArray) => {
+  const flavorCountArray = [];
+  let currentFlavorCount = 0;
+  for (let i=0; i<tempArray.length; i++) {
+    currentFlavorCount = 0;
+    for (let j=0; j<array.length; j++) {
+      if (array[j] === tempArray[i]) {
+        currentFlavorCount++;
+      }
+    }
+    flavorCountArray.push(currentFlavorCount);
+  }
+  return flavorCountArray;
+} 
+
+console.log(getFlavorCount(flavorArray, removeArrayDupes(flavorArray)));
 
 
 // This function will build an object of flavor and quantities.
 // @params {array} flavorArray
 // @return {object} flavorObject
 const buildFlavorObject = (flavorArray) => {
-  let currentFlavorNumber = 0;
-  let currentFlavorString = '';
+  const flavorArrayNoDupes = removeArrayDupes(flavorArray);
+  const flavorArrayCount = getFlavorCount(flavorArray, flavorArrayNoDupes);
   let flavorObject = {};
-  for (let i=0; i<flavorArray.length; i++) {
-    flavorObject[i] = flavorArray[i];
+  for (let i=0; i<flavorArrayNoDupes.length; i++) {
+    flavorObject[flavorArrayNoDupes[i]] = flavorArrayCount[i];
   }
   return flavorObject;
 } 
 
-const flavorObject = buildFlavorObject(flavorArray);
-
-console.log("String of Flavors:", flavorString);
-console.log("Array of Flavors:", flavorArray);
-console.log("Object of Flavors:", flavorObject);
+console.table(buildFlavorObject(flavorArray));
