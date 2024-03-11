@@ -34,14 +34,14 @@ removing all duplicates from the main array.
 const removeArrayDupes = (flavorArray) => {
   const tempNoDupeArray = [];
   //need to sort flavorArray alphabetically in order for this function to function.
-  flavorArray.sort()
+  flavorArray.sort();
   tempNoDupeArray.push(flavorArray[0]);
   for (let i=1; i<flavorArray.length; i++) {
     if (flavorArray[i] === flavorArray[i-1]) continue;
-    tempNoDupeArray.push(flavorArray[i])
-  }
+    tempNoDupeArray.push(flavorArray[i]);
+  };
   return tempNoDupeArray;
-}
+};
 
 /* 
 This function will build the second temp array, 
@@ -59,14 +59,12 @@ const getFlavorCount = (flavorArray, tempNoDupeArray) => {
   for (let i=0; i<tempNoDupeArray.length; i++) {
     currentFlavorCount = 0;
     for (let j=0; j<flavorArray.length; j++) {
-      if (flavorArray[j] === tempNoDupeArray[i]) {
-        currentFlavorCount++;
-      }
+      if (flavorArray[j] === tempNoDupeArray[i]) currentFlavorCount++;
     }
     tempFlavorCountArray.push(currentFlavorCount);
-  }
+  };
   return tempFlavorCountArray;
-} 
+} ;
 
 /* 
 This function will use our two temp functions to transform our main array
@@ -82,9 +80,9 @@ const buildFlavorObject = (flavorArray) => {
   let flavorObject = {};
   for (let i=0; i<flavorArrayNoDupes.length; i++) {
     flavorObject[flavorArrayNoDupes[i]] = flavorArrayCount[i];
-  }
+  };
   return flavorObject;
-} 
+};
 
 /* 
 This is our main script. We prompt the user for their order of desired flavors,
